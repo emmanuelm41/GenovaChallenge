@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"ML/models"
-	"ML/satelites"
-	"ML/workers"
+	"GenovaChallenge/models"
+	"GenovaChallenge/satelites"
+	"GenovaChallenge/workers"
 	"encoding/json"
 	"fmt"
 	"log"

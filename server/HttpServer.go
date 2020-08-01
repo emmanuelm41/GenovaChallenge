@@ -1,7 +1,7 @@
 package server
 
 import (
-	"ML/server/routes"
+	"GenovaChallenge/server/routes"
 	"log"
 	"net/http"
 

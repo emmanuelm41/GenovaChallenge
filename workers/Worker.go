@@ -1,7 +1,7 @@
 package workers
 
 import (
-	"ML/models"
+	"GenovaChallenge/models"
 	"fmt"
 	"strings"
 

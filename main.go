@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ML/server"
+	"GenovaChallenge/server"
 	"log"
 	"os"
 )
