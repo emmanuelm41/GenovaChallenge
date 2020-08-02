@@ -43,7 +43,10 @@ func TopSecretRoute(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	err := json.NewDecoder(req.Body).Decode(&topSecretMsg)
+	decoder := json.NewDecoder(req.Body)
+	decoder.DisallowUnknownFields()
+
+	err := decoder.Decode(&topSecretMsg)
 	if err != nil {
 		http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
 		return

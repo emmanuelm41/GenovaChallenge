@@ -6,34 +6,53 @@ import (
 	"GenovaChallenge/workers"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
-
-	"github.com/imdario/mergo"
+	"reflect"
 )
 
-var topSecretMsg TopSecretMsg
 var w1 workers.Worker
+
+var kn KenobiTopSecMsg
+var st SatoTopSecMSg
+var sw SkywalkerTopSecMsg
 
 // TopSecretSplitRoute asdas
 func TopSecretSplitRoute(res http.ResponseWriter, req *http.Request) {
 
-	log.Printf("New request rcv in /topsecret. HTTP Method: %v\n", req.Method)
+	log.Printf("New request rcv in /topsecret_split. HTTP Method: %v\n", req.Method)
 
 	if req.Method == "POST" {
 
-		var pTopSecretMsg TopSecretMsg
-		err := json.NewDecoder(req.Body).Decode(&pTopSecretMsg)
+		body, err := ioutil.ReadAll(req.Body)
 		if err != nil {
 			http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
 			return
 		}
 
-		log.Printf("The rcv body is %+v\n", pTopSecretMsg)
+		var myMap map[string]map[string]json.RawMessage
+		json.Unmarshal(body, &myMap)
 
-		mergo.Merge(&topSecretMsg, pTopSecretMsg)
+		if getType(myMap, "kenobi") {
+			err = json.Unmarshal(body, &kn)
+		} else if getType(myMap, "sato") {
+			err = json.Unmarshal(body, &st)
+		} else if getType(myMap, "skywalker") {
+			err = json.Unmarshal(body, &sw)
+		} else {
+			http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
+			return
+		}
 
-		log.Printf("The actual data is %+v\n", topSecretMsg)
+		if err != nil {
+			http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
+			return
+		}
+
+		log.Printf("The actual data for Kenobi is %+v\n", kn)
+		log.Printf("The actual data for Sato is %+v\n", st)
+		log.Printf("The actual data for Skywalker is %+v\n", sw)
 
 		header := res.Header()
 		header.Set("Content-Type", "application/json")
@@ -42,7 +61,15 @@ func TopSecretSplitRoute(res http.ResponseWriter, req *http.Request) {
 
 	} else if req.Method == "GET" {
 
-		log.Printf("Initiating position and message process with data: %+v\n", topSecretMsg)
+		if reflect.DeepEqual(kn, KenobiTopSecMsg{}) || reflect.DeepEqual(st, SatoTopSecMSg{}) || reflect.DeepEqual(sw, SkywalkerTopSecMsg{}) {
+			header := res.Header()
+			header.Set("Content-Type", "application/json")
+			res.WriteHeader(http.StatusAccepted)
+			fmt.Fprintf(res, `{"message": Not enough data"`)
+			return
+		}
+
+		log.Printf("Initiating position and message process with data: %+v %+v %+v\n", kn, st, sw)
 
 		if w1 == (workers.Worker{}) {
 			sato := models.Sato{X: satelites.SatoPosX, Y: satelites.SatoPosY, Z: satelites.SatoPosZ}
@@ -52,8 +79,8 @@ func TopSecretSplitRoute(res http.ResponseWriter, req *http.Request) {
 			w1 = workers.Worker{Kenobi: kenobi, Sato: sato, Skywalker: skywalker}
 		}
 
-		x, y, z, err1 := w1.GetLocation(topSecretMsg.Distance.Kenobi, topSecretMsg.Distance.Sato, topSecretMsg.Distance.Skywalker)
-		message, err2 := w1.GetMessage(topSecretMsg.Message.Kenobi, topSecretMsg.Message.Sato, topSecretMsg.Message.Skywalker)
+		x, y, z, err1 := w1.GetLocation(kn.Distance.Kenobi, st.Distance.Sato, sw.Distance.Skywalker)
+		message, err2 := w1.GetMessage(kn.Message.Kenobi, st.Message.Sato, sw.Message.Skywalker)
 
 		if err1 != nil || err2 != nil {
 			http.Error(res, "", http.StatusNotFound)
@@ -63,6 +90,7 @@ func TopSecretSplitRoute(res http.ResponseWriter, req *http.Request) {
 			res.WriteHeader(http.StatusAccepted)
 			fmt.Fprintf(res, `{"message": "%s", "position": { "x": %f, "y": %f, "z": %f }}`, message, x, y, z)
 		}
+
 	} else {
 		http.Error(res, "Method is not supported.", http.StatusNotFound)
 		return
