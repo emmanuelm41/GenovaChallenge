@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "8e81d931-4484-4e53-8066-f761675b9293",
+		"name": "GenovaChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TopSecret_Wrong",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"distance\": {\r\n    \"kenobi\" : 6666666666666,\r\n    \"sato\" : 746546546458.677777777,\r\n    \"skywalker\" : 12.5\r\n  },\r\n  \"message\":{\r\n    \"kenobi\" : [\"asdasd\",\"asdasd\"],\r\n    \"sato\" : [\"asdasd\",\"\",\"\"],\r\n    \"skywalker\" : [\"\",\"asdas\",\"\"]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "http://genovachallenge.uc.r.appspot.com:80/topsecret",
+					"protocol": "http",
+					"host": [
+						"genovachallenge",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"port": "80",
+					"path": [
+						"topsecret"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TopSecret_OK",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"distance\": {\r\n    \"kenobi\" : 6666666666666,\r\n    \"sato\" : 746546546458.677777777,\r\n    \"skywalker\" : 12.5\r\n  },\r\n  \"message\":{\r\n    \"kenobi\" : [\"This\",\"\", \"a\", \"message\"],\r\n    \"sato\" : [\"\",\"is\",\"\", \"message\"],\r\n    \"skywalker\" : [\"\",\"\",\"\", \"a\"]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "http://genovachallenge.uc.r.appspot.com:80/topsecret",
+					"protocol": "http",
+					"host": [
+						"genovachallenge",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"port": "80",
+					"path": [
+						"topsecret"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TopSecretSplit_Skywalker",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"distance\": {\r\n    \"skywalker\" : 746546546458.677777777\r\n  },\r\n  \"message\":{\r\n    \"skywalker\" : [\"asdasd\",\"\",\"\"]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "http://genovachallenge.uc.r.appspot.com:80/topsecret_split",
+					"protocol": "http",
+					"host": [
+						"genovachallenge",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"port": "80",
+					"path": [
+						"topsecret_split"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TopSecretSplit_Sato",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"distance\": {\r\n    \"sato\" : 746546546458.677777777\r\n  },\r\n  \"message\":{\r\n    \"sato\" : [\"asdasd\",\"\",\"\"]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "http://genovachallenge.uc.r.appspot.com:80/topsecret_split",
+					"protocol": "http",
+					"host": [
+						"genovachallenge",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"port": "80",
+					"path": [
+						"topsecret_split"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TopSecretSplit_Kenobi",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"distance\": {\r\n    \"kenobi\" : 6666666666666\r\n  },\r\n  \"message\":{\r\n    \"kenobi\" : [\"asdasd\",\"asdasd\", \"jghjgh\"]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "http://genovachallenge.uc.r.appspot.com:80/topsecret_split",
+					"protocol": "http",
+					"host": [
+						"genovachallenge",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"port": "80",
+					"path": [
+						"topsecret_split"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TopSecretSplit_Get",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://genovachallenge.uc.r.appspot.com:80/topsecret_split",
+					"protocol": "http",
+					"host": [
+						"genovachallenge",
+						"uc",
+						"r",
+						"appspot",
+						"com"
+					],
+					"port": "80",
+					"path": [
+						"topsecret_split"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
