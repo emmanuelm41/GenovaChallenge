@@ -13,6 +13,7 @@ func Start(port string) {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/topsecret", routes.TopSecretRoute)
+	r.HandleFunc("/topsecret_split", routes.TopSecretSplitRoute)
 	http.Handle("/", r)
 
 	log.Printf("Listening on port %s", port)

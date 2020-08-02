@@ -30,6 +30,8 @@ type TopSecretMsg struct {
 	Message  Messages  `json:"message"`
 }
 
+var w2 workers.Worker
+
 // TopSecretRoute asdas
 func TopSecretRoute(res http.ResponseWriter, req *http.Request) {
 	var topSecretMsg TopSecretMsg
@@ -49,14 +51,16 @@ func TopSecretRoute(res http.ResponseWriter, req *http.Request) {
 
 	log.Printf("The rcv body is %+v\n", topSecretMsg)
 
-	sato := models.Sato{X: satelites.SatoPosX, Y: satelites.SatoPosY, Z: satelites.SatoPosZ}
-	kenobi := models.Kenobi{X: satelites.KenobiPosX, Y: satelites.KenobiPosY, Z: satelites.KenobiPosZ}
-	skywalker := models.Skywalker{X: satelites.SkywalkerPosX, Y: satelites.SkywalkerPosY, Z: satelites.SkywalkerPosZ}
+	if w2 == (workers.Worker{}) {
+		sato := models.Sato{X: satelites.SatoPosX, Y: satelites.SatoPosY, Z: satelites.SatoPosZ}
+		kenobi := models.Kenobi{X: satelites.KenobiPosX, Y: satelites.KenobiPosY, Z: satelites.KenobiPosZ}
+		skywalker := models.Skywalker{X: satelites.SkywalkerPosX, Y: satelites.SkywalkerPosY, Z: satelites.SkywalkerPosZ}
 
-	w := workers.Worker{Kenobi: kenobi, Sato: sato, Skywalker: skywalker}
+		w2 = workers.Worker{Kenobi: kenobi, Sato: sato, Skywalker: skywalker}
+	}
 
-	x, y, z, err1 := w.GetLocation(topSecretMsg.Distance.Kenobi, topSecretMsg.Distance.Sato, topSecretMsg.Distance.Skywalker)
-	message, err2 := w.GetMessage(topSecretMsg.Message.Kenobi, topSecretMsg.Message.Sato, topSecretMsg.Message.Skywalker)
+	x, y, z, err1 := w2.GetLocation(topSecretMsg.Distance.Kenobi, topSecretMsg.Distance.Sato, topSecretMsg.Distance.Skywalker)
+	message, err2 := w2.GetMessage(topSecretMsg.Message.Kenobi, topSecretMsg.Message.Sato, topSecretMsg.Message.Skywalker)
 
 	if err1 != nil || err2 != nil {
 		http.Error(res, "", http.StatusNotFound)
