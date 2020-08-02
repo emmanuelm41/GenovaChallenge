@@ -18,8 +18,11 @@ var kn KenobiTopSecMsg
 var st SatoTopSecMSg
 var sw SkywalkerTopSecMsg
 
-// RouteHandler asdas
+// RouteHandler Implementa la logica de negocio para la ruta /topsecret_split
 func RouteHandler(res http.ResponseWriter, req *http.Request) {
+
+	header := res.Header()
+	header.Set("Content-Type", "application/json")
 
 	log.Printf("New request rcv in /topsecret_split. HTTP Method: %v\n", req.Method)
 
@@ -27,26 +30,26 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 
 		body, err := ioutil.ReadAll(req.Body)
 		if err != nil {
-			http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
+			http.Error(res, `{"message": "Msg rcv is not valid"}`, http.StatusBadRequest)
 			return
 		}
 
 		var myMap map[string]map[string]json.RawMessage
 		json.Unmarshal(body, &myMap)
 
-		if getType(myMap, "kenobi") {
+		if getSateliteFromMsg(myMap, "kenobi") {
 			err = json.Unmarshal(body, &kn)
-		} else if getType(myMap, "sato") {
+		} else if getSateliteFromMsg(myMap, "sato") {
 			err = json.Unmarshal(body, &st)
-		} else if getType(myMap, "skywalker") {
+		} else if getSateliteFromMsg(myMap, "skywalker") {
 			err = json.Unmarshal(body, &sw)
 		} else {
-			http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
+			http.Error(res, `{"message": "Msg rcv is not valid"}`, http.StatusBadRequest)
 			return
 		}
 
 		if err != nil {
-			http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
+			http.Error(res, `{"message": "Msg rcv is not valid"}`, http.StatusBadRequest)
 			return
 		}
 
@@ -54,18 +57,13 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 		log.Printf("The actual data for Sato is %+v\n", st)
 		log.Printf("The actual data for Skywalker is %+v\n", sw)
 
-		header := res.Header()
-		header.Set("Content-Type", "application/json")
 		res.WriteHeader(http.StatusAccepted)
 		fmt.Fprintf(res, `{"message": "Data received"}`)
 
 	} else if req.Method == "GET" {
 
 		if reflect.DeepEqual(kn, KenobiTopSecMsg{}) || reflect.DeepEqual(st, SatoTopSecMSg{}) || reflect.DeepEqual(sw, SkywalkerTopSecMsg{}) {
-			header := res.Header()
-			header.Set("Content-Type", "application/json")
-			res.WriteHeader(http.StatusAccepted)
-			fmt.Fprintf(res, `{"message": Not enough data"`)
+			http.Error(res, `{"message": "Not enough data"}`, http.StatusNotFound)
 			return
 		}
 
@@ -85,14 +83,12 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 		if err1 != nil || err2 != nil {
 			http.Error(res, "", http.StatusNotFound)
 		} else {
-			header := res.Header()
-			header.Set("Content-Type", "application/json")
 			res.WriteHeader(http.StatusAccepted)
 			fmt.Fprintf(res, `{"message": "%s", "position": { "x": %f, "y": %f, "z": %f }}`, message, x, y, z)
 		}
 
 	} else {
-		http.Error(res, "Method is not supported.", http.StatusNotFound)
+		http.Error(res, `{"message": "Method is not supported."}`, http.StatusNotFound)
 		return
 	}
 

@@ -2,12 +2,12 @@ package satelites
 
 const (
 
-	// SatoPosX Z position of Sato satelite
+	// SatoPosX Posicion x del satelite Sato por default
 	SatoPosX = 500.0
 
-	// SatoPosY Z position of Sato satelite
+	// SatoPosY Posicion y del satelite Sato por default
 	SatoPosY = 100.0
 
-	// SatoPosZ Z position of Sato satelite
+	// SatoPosZ Posicion z del satelite Sato por default
 	SatoPosZ = 0
 )

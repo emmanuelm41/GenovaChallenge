@@ -12,7 +12,7 @@ import (
 
 var w2 workers.Worker
 
-// RouteHandler asdas
+// RouteHandler Implementa la logica de negocio para la ruta /topsecret
 func RouteHandler(res http.ResponseWriter, req *http.Request) {
 	var topSecretMsg Msg
 

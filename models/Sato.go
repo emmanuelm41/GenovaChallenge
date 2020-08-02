@@ -1,4 +1,4 @@
 package models
 
-// Sato asda
+// Sato Posicion del satelite Sato
 type Sato = Satelite

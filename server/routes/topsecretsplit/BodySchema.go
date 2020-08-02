@@ -2,55 +2,56 @@ package topsecretsplit
 
 import "encoding/json"
 
-// KenobiDist asdasd
+// KenobiDist Distancia del emisor al satelite Kenobi
 type KenobiDist struct {
 	Kenobi float64 `json:"kenobi"`
 }
 
-// KenobiMsg asdasdasd
+// KenobiMsg Mensajes recibidos por el satelite Kenobi
 type KenobiMsg struct {
 	Kenobi []string `json:"kenobi"`
 }
 
-// KenobiTopSecMsg asdasd
+// KenobiTopSecMsg Distancia y mensajes recibidos por el satelite Kenobi
 type KenobiTopSecMsg struct {
 	Distance KenobiDist `json:"distance"`
 	Message  KenobiMsg  `json:"message"`
 }
 
-// SatoDist asdasd
+// SatoDist Distancia del emisor al satelite Sato
 type SatoDist struct {
 	Sato float64 `json:"sato"`
 }
 
-// SatoMsg asdasdasd
+// SatoMsg Mensajes recibidos por el satelite Sato
 type SatoMsg struct {
 	Sato []string `json:"sato"`
 }
 
-// SatoTopSecMSg asdasd
+// SatoTopSecMSg Distancia y mensajes recibidos por el satelite Sato
 type SatoTopSecMSg struct {
 	Distance SatoDist `json:"distance"`
 	Message  SatoMsg  `json:"message"`
 }
 
-// SkyWalkerDist asdasd
+// SkyWalkerDist Distancia del emisor al satelite SkyWalker
 type SkyWalkerDist struct {
 	Skywalker float64 `json:"skywalker"`
 }
 
-// SkywalkerMsg asdasdasd
+// SkywalkerMsg Mensajes recibidos por el satelite SkyWalker
 type SkywalkerMsg struct {
 	Skywalker []string `json:"skywalker"`
 }
 
-// SkywalkerTopSecMsg asdasd
+// SkywalkerTopSecMsg Distancia y mensajes recibidos por el satelite SkyWalker
 type SkywalkerTopSecMsg struct {
 	Distance SkyWalkerDist `json:"distance"`
 	Message  SkywalkerMsg  `json:"message"`
 }
 
-func getType(myMap map[string]map[string]json.RawMessage, key1 string) bool {
+// Permite identificar si un mensaje recibido pertenece a un satelite dado - Input: Mapa generado a partir del JSON recibido - Output: Indica si el mensaje recibido corresponde al satelite en cuestion
+func getSateliteFromMsg(myMap map[string]map[string]json.RawMessage, key1 string) bool {
 
 	found1 := false
 	found2 := false

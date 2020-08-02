@@ -1,4 +1,4 @@
 package models
 
-// Kenobi asda
+// Kenobi Posicion del satelite Kenobi
 type Kenobi = Satelite

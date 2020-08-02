@@ -1,12 +1,12 @@
 package satelites
 
 const (
-	// SkywalkerPosX X position of Skywalker satelite
+	// SkywalkerPosX Posicion x del satelite Skywalker por default
 	SkywalkerPosX = 100.0
 
-	// SkywalkerPosY Y position of Skywalker satelite
+	// SkywalkerPosY Posicion y del satelite Skywalker por default
 	SkywalkerPosY = -100.0
 
-	// SkywalkerPosZ Z position of Skywalker satelite
+	// SkywalkerPosZ Posicion z del satelite Skywalker por default
 	SkywalkerPosZ = 0
 )

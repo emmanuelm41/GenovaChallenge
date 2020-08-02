@@ -2,12 +2,12 @@ package satelites
 
 const (
 
-	// KenobiPosX X position of Kenobi satelite
+	// KenobiPosX Posicion x del satelite Kenobi por default
 	KenobiPosX = -500.0
 
-	// KenobiPosY Y position of Kenobi satelite
+	// KenobiPosY Posicion y del satelite Kenobi por default
 	KenobiPosY = -200.0
 
-	// KenobiPosZ Z position of Kenobi satelite
+	// KenobiPosZ Posicion z del satelite Kenobi por default
 	KenobiPosZ = 0
 )

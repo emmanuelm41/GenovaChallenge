@@ -8,16 +8,14 @@ import (
 	"github.com/co60ca/trilateration"
 )
 
-// Worker asdasd
+// Worker Satelites involucrados en el calculo de posicion del emisor del mensaje
 type Worker struct {
 	Kenobi    models.Kenobi
 	Skywalker models.Skywalker
 	Sato      models.Sato
 }
 
-// GetLocation sads
-// input: distancia al emisor tal cual se recibe en cada satélite
-// output: las coordenadas ‘x’ e ‘y’ del emisor del mensaje
+// GetLocation - Input: distancia al emisor tal cual se recibe en cada satélite - Output: las coordenadas ‘x’ e ‘y’ del emisor del mensaje
 func (w Worker) GetLocation(distKenobi, distSkywalker, distSato float64) (x, y, z float64, err error) {
 	kenobiPos := trilateration.Point3{w.Kenobi.X, w.Kenobi.Y, w.Kenobi.Z}
 	skywalkerPos := trilateration.Point3{w.Skywalker.X, w.Skywalker.Y, w.Skywalker.Z}
@@ -37,11 +35,7 @@ func (w Worker) GetLocation(distKenobi, distSkywalker, distSato float64) (x, y, 
 
 }
 
-// GetMessage sads
-/**
-* Input: El mensaje recibido en cada satelite tendra la misma cantidad de slots (palabras). Si asi no sucede, el mensaje sera rechazado de plano
-* Output: El mensaje tal cual lo genera el emisor del mensaje
- */
+// GetMessage - El mensaje recibido en cada satelite tendra la misma cantidad de slots (palabras). Si asi no sucede, el mensaje sera rechazado de plano - Output: El mensaje tal cual lo genera el emisor del mensaje
 func (w Worker) GetMessage(msgKenobi, msgSkywalker, msgSato []string) (message string, err error) {
 	result := ""
 

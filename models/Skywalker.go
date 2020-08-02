@@ -1,4 +1,4 @@
 package models
 
-// Skywalker asda
+// Skywalker Posicion del satelite Skywalker
 type Skywalker = Satelite
