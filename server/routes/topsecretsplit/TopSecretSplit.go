@@ -29,27 +29,42 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "POST" {
 
 		body, err := ioutil.ReadAll(req.Body)
+
 		if err != nil {
-			http.Error(res, `{"message": "Msg rcv is not valid"}`, http.StatusBadRequest)
+			log.Printf("Error found trying to read the body")
+
+			res.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(res, `{"message": "Msg rcv is not valid"}`)
 			return
 		}
+
+		log.Printf("The raw body rcv is %v\n", body)
 
 		var myMap map[string]map[string]json.RawMessage
 		json.Unmarshal(body, &myMap)
 
 		if getSateliteFromMsg(myMap, "kenobi") {
 			err = json.Unmarshal(body, &kn)
+			log.Printf("The kenobi body rcv is %v\n", kn)
 		} else if getSateliteFromMsg(myMap, "sato") {
 			err = json.Unmarshal(body, &st)
+			log.Printf("The sato body rcv is %v\n", st)
 		} else if getSateliteFromMsg(myMap, "skywalker") {
 			err = json.Unmarshal(body, &sw)
+			log.Printf("The skywalker body rcv is %v\n", sw)
 		} else {
-			http.Error(res, `{"message": "Msg rcv is not valid"}`, http.StatusBadRequest)
+			log.Printf("The body rcv was not recognized\n")
+
+			res.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(res, `{"message": "Msg rcv is not valid"}`)
 			return
 		}
 
 		if err != nil {
-			http.Error(res, `{"message": "Msg rcv is not valid"}`, http.StatusBadRequest)
+			log.Printf("Error found trying to read the body")
+
+			res.WriteHeader(http.StatusNotFound)
+			fmt.Fprintf(res, `{"message": "Msg rcv is not valid"}`)
 			return
 		}
 
@@ -57,13 +72,19 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 		log.Printf("The actual data for Sato is %+v\n", st)
 		log.Printf("The actual data for Skywalker is %+v\n", sw)
 
+		log.Printf("Sending response back to client\n")
+
 		res.WriteHeader(http.StatusAccepted)
 		fmt.Fprintf(res, `{"message": "Data received"}`)
 
 	} else if req.Method == "GET" {
 
 		if reflect.DeepEqual(kn, KenobiTopSecMsg{}) || reflect.DeepEqual(st, SatoTopSecMSg{}) || reflect.DeepEqual(sw, SkywalkerTopSecMsg{}) {
-			http.Error(res, `{"message": "Not enough data"}`, http.StatusNotFound)
+
+			log.Printf("Not enough data to apply calculation process")
+
+			res.WriteHeader(http.StatusNotFound)
+			fmt.Fprintf(res, `{"message": "Not enough data"}`)
 			return
 		}
 
@@ -81,14 +102,23 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 		message, err2 := w1.GetMessage(kn.Message.Kenobi, st.Message.Sato, sw.Message.Skywalker)
 
 		if err1 != nil || err2 != nil {
-			http.Error(res, "", http.StatusNotFound)
+			log.Printf("Calculation process failed")
+
+			res.WriteHeader(http.StatusNotFound)
+			fmt.Fprintf(res, `{"message":"Coud not apply process to rcv data"`)
 		} else {
+
+			log.Printf("Sending response back to client")
+
 			res.WriteHeader(http.StatusAccepted)
 			fmt.Fprintf(res, `{"message": "%s", "position": { "x": %f, "y": %f, "z": %f }}`, message, x, y, z)
 		}
 
 	} else {
-		http.Error(res, `{"message": "Method is not supported."}`, http.StatusNotFound)
+		log.Printf("HTTP Method not supported")
+
+		res.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(res, `{"message": "Method is not supported."}`)
 		return
 	}
 

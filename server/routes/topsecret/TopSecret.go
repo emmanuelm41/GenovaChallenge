@@ -16,10 +16,16 @@ var w2 workers.Worker
 func RouteHandler(res http.ResponseWriter, req *http.Request) {
 	var topSecretMsg Msg
 
+	header := res.Header()
+	header.Set("Content-Type", "application/json")
+
 	log.Printf("New request rcv in /topsecret. HTTP Method: %v\n", req.Method)
 
 	if req.Method != "POST" {
-		http.Error(res, "Method is not supported.", http.StatusNotFound)
+		log.Printf("HTTP Method not supported")
+
+		res.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(res, `{"message": "Method is not supported."}`)
 		return
 	}
 
@@ -28,7 +34,10 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 
 	err := decoder.Decode(&topSecretMsg)
 	if err != nil {
-		http.Error(res, "Body rcv is not valid. Please check it first!", http.StatusBadRequest)
+		log.Printf("Error found trying to read the body")
+
+		res.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(res, `{"message": "Msg rcv is not valid"}`)
 		return
 	}
 
@@ -46,10 +55,13 @@ func RouteHandler(res http.ResponseWriter, req *http.Request) {
 	message, err2 := w2.GetMessage(topSecretMsg.Message.Kenobi, topSecretMsg.Message.Sato, topSecretMsg.Message.Skywalker)
 
 	if err1 != nil || err2 != nil {
-		http.Error(res, "", http.StatusNotFound)
+		log.Printf("Calculation process failed")
+
+		res.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(res, `{"message":"Coud not apply process to rcv data"`)
 	} else {
-		header := res.Header()
-		header.Set("Content-Type", "application/json")
+		log.Printf("Sending response back to client")
+
 		res.WriteHeader(http.StatusAccepted)
 		fmt.Fprintf(res, `{"message": "%s", "position": { "x": %f, "y": %f, "z": %f }}`, message, x, y, z)
 	}
