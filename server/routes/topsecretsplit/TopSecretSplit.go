@@ -1,4 +1,4 @@
-package routes
+package topsecretsplit
 
 import (
 	"GenovaChallenge/models"
@@ -18,8 +18,8 @@ var kn KenobiTopSecMsg
 var st SatoTopSecMSg
 var sw SkywalkerTopSecMsg
 
-// TopSecretSplitRoute asdas
-func TopSecretSplitRoute(res http.ResponseWriter, req *http.Request) {
+// RouteHandler asdas
+func RouteHandler(res http.ResponseWriter, req *http.Request) {
 
 	log.Printf("New request rcv in /topsecret_split. HTTP Method: %v\n", req.Method)
 

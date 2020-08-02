@@ -1,4 +1,4 @@
-package routes
+package topsecretsplit
 
 import "encoding/json"
 

@@ -1,7 +1,8 @@
 package server
 
 import (
-	"GenovaChallenge/server/routes"
+	"GenovaChallenge/server/routes/topsecret"
+	"GenovaChallenge/server/routes/topsecretsplit"
 	"log"
 	"net/http"
 
@@ -12,8 +13,8 @@ import (
 func Start(port string) {
 
 	r := mux.NewRouter()
-	r.HandleFunc("/topsecret", routes.TopSecretRoute)
-	r.HandleFunc("/topsecret_split", routes.TopSecretSplitRoute)
+	r.HandleFunc("/topsecret", topsecret.RouteHandler)
+	r.HandleFunc("/topsecret_split", topsecretsplit.RouteHandler)
 	http.Handle("/", r)
 
 	log.Printf("Listening on port %s", port)

@@ -1,4 +1,4 @@
-package routes
+package topsecret
 
 import (
 	"GenovaChallenge/models"
@@ -10,31 +10,11 @@ import (
 	"net/http"
 )
 
-// Distances asdasd
-type Distances struct {
-	Kenobi    float64 `json:"kenobi"`
-	Sato      float64 `json:"sato"`
-	Skywalker float64 `json:"skywalker"`
-}
-
-// Messages asdasdasd
-type Messages struct {
-	Kenobi    []string `json:"kenobi"`
-	Sato      []string `json:"sato"`
-	Skywalker []string `json:"skywalker"`
-}
-
-// TopSecretMsg asdasd
-type TopSecretMsg struct {
-	Distance Distances `json:"distance"`
-	Message  Messages  `json:"message"`
-}
-
 var w2 workers.Worker
 
-// TopSecretRoute asdas
-func TopSecretRoute(res http.ResponseWriter, req *http.Request) {
-	var topSecretMsg TopSecretMsg
+// RouteHandler asdas
+func RouteHandler(res http.ResponseWriter, req *http.Request) {
+	var topSecretMsg Msg
 
 	log.Printf("New request rcv in /topsecret. HTTP Method: %v\n", req.Method)
 
