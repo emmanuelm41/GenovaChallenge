@@ -41,10 +41,19 @@ func (w Worker) GetMessage(msgKenobi, msgSkywalker, msgSato []string) (message s
 
 	if len(msgKenobi) == len(msgSkywalker) && len(msgSkywalker) == len(msgSato) {
 		for i, val := range msgKenobi {
+
+			// Some integrity validations
 			if val == "" && msgSkywalker[i] == "" && msgSato[i] == "" {
 				return result, fmt.Errorf("Some word was not received in any satelite")
+			} else if val != "" && msgSkywalker[i] != "" && val != msgSkywalker[i] {
+				return result, fmt.Errorf("Some word received from the  satelites is wrong")
+			} else if msgSato[i] != "" && msgSkywalker[i] != "" && msgSato[i] != msgSkywalker[i] {
+				return result, fmt.Errorf("Some word received from the  satelites is wrong")
+			} else if msgSato[i] != "" && val != "" && msgSato[i] != val {
+				return result, fmt.Errorf("Some word received from the  satelites is wrong")
 			}
 
+			// Add value to the result
 			if len(val) > 0 {
 				result += val + " "
 			} else if len(msgSkywalker[i]) > 0 {
